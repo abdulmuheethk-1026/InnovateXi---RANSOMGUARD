@@ -1,0 +1,4 @@
+Invoice Number: INV-1021
+Client: ABC Traders
+Amount: ₹12,500
+Status: Pending

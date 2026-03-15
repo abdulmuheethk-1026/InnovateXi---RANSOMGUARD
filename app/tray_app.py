@@ -27,6 +27,16 @@ from app.license_manager import is_activated, get_license_status
 from rg_logger import get_logger
 
 logger = get_logger("TrayApp")
+import os
+
+LICENSE_FILE = r"C:\ProgramData\RansomGuard\license.dat"
+
+def reset_activation():
+    if os.path.exists(LICENSE_FILE):
+        os.remove(LICENSE_FILE)
+        print("Activation reset successfully.")
+    else:
+        print("License file not found.")
 
 APP_NAME = "RansomGuard"
 ACCENT   = "#E84545"
@@ -262,7 +272,10 @@ def run_tray(agent, dashboard):
 # ─────────────────────────────────────────────────────
 
 def main():
-    
+
+     # Reset activation if requested
+    if "--reset" in sys.argv:
+        reset_activation()
 
     # License check
     if not is_activated():
@@ -278,6 +291,7 @@ def main():
 
         if not activated:
             sys.exit(0)
+    print("Activation status:", is_activated())
 
     # 2. Start guard agent
     from core.ransomguard_main import RansomGuardAgent
@@ -287,8 +301,9 @@ def main():
     dashboard = Dashboard(agent=agent)
 
     def _sig(sig, frame):
+        logger.info("Stopping RansomGuard...")
         agent.stop()
-        sys.exit(0)
+        os._exit(0)
     signal.signal(signal.SIGINT,  _sig)
     signal.signal(signal.SIGTERM, _sig)
 

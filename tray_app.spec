@@ -2,8 +2,8 @@
 
 
 a = Analysis(
-    ['stop_ransomguard.py'],
-    pathex=[],
+    ['app\\tray_app.py'],
+    pathex=['.'],
     binaries=[],
     datas=[],
     hiddenimports=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='stop_ransomguard',
+    name='tray_app',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
